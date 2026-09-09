@@ -1,0 +1,2668 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>스페인어 1등급 프로젝트 — 5과 실전 문제은행</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#f5f6fa;--card:#fff;--text:#17191f;--muted:#6b7280;--line:#e5e7eb;--accent:#2457ff;--good:#197a3c;--bad:#b42318;--warn:#9a6700}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:22px 14px 125px}
+.hero{background:#111827;color:#fff;border-radius:20px;padding:22px;margin-bottom:14px}
+.hero h1{font-size:26px;margin:0 0 8px}
+.hero p{margin:4px 0;line-height:1.55;color:#dbe3ff}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.pill{background:#24304b;border-radius:999px;padding:7px 10px;font-size:13px}
+.controls{background:#fff;border-radius:16px;padding:12px;margin-bottom:14px;position:sticky;top:0;z-index:5;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.filterrow{display:flex;gap:6px;overflow:auto;padding-bottom:6px}
+.filterBtn,.allBtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-weight:700;white-space:nowrap}
+.filterBtn.active,.allBtn.active{background:#111827;color:#fff}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:11px 0;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.qtop{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+.qnum{display:inline-flex;width:30px;height:30px;border-radius:9px;background:#eef2ff;align-items:center;justify-content:center;font-weight:900;color:#2947b8}
+.sectiontag{font-size:12px;color:var(--muted);font-weight:700}
+.prompt{font-size:17px;font-weight:750;line-height:1.5;margin-bottom:10px}
+.hint{font-size:13px;color:var(--warn);margin:-4px 0 8px}
+.answer{width:100%;font-size:17px;border:1.5px solid #cfd4dc;border-radius:11px;padding:12px;background:#fff}
+.answer:focus{outline:3px solid #dbe4ff;border-color:var(--accent)}
+.qcard.correct{border-color:#79c18d;background:#f5fff8}
+.qcard.accent{border-color:#e5b94f;background:#fffaf0}
+.qcard.wrong{border-color:#e69a93;background:#fff7f6}
+.feedback{font-weight:800;margin-top:9px}
+.correct .feedback{color:var(--good)}
+.accent .feedback{color:var(--warn)}
+.wrong .feedback{color:var(--bad)}
+.model{display:none;margin-top:7px;color:#374151;font-size:14px;line-height:1.45}
+.graded .model{display:block}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(245,246,250,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:10}
+.bottomIn{max-width:900px;margin:0 auto;padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.action{border:0;border-radius:11px;padding:11px 13px;font-size:15px;font-weight:850}
+.primary{background:var(--accent);color:#fff}
+.secondary{background:#e9ecf2}
+.danger{background:#fff0ef;color:#9f1f16}
+.score{margin-left:auto;font-weight:900;font-size:16px}
+.summary{display:none;background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid var(--line)}
+.summary.show{display:block}
+.summary strong{font-size:21px}
+.hidden{display:none!important}
+@media(max-width:600px){.hero h1{font-size:23px}.prompt{font-size:16px}.score{width:100%;margin-left:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<h1>스페인어 1등급 프로젝트 — 5과 실전 문제은행</h1>
+<p>보내주신 단어표·필기 범위만 사용했습니다. 직접 입력형 중심이며, 관사·활용·강세까지 확인합니다.</p>
+<p>한 번에 다 풀 필요 없습니다. 원하는 만큼 풀고 <b>‘푼 것만 채점’</b>을 누르면 됩니다. 브라우저에서 열면 입력 내용이 자동 저장됩니다.</p>
+<div class="stats">
+<span class="pill">총 270문제</span>
+<span class="pill">직접 입력형</span>
+<span class="pill">강세 오류 별도 표시</span>
+<span class="pill">범위 밖 단어 최소화</span>
+</div>
+</section>
+
+<div id="summary" class="summary"></div>
+
+<div class="controls">
+<div class="filterrow">
+<button class="allBtn active" data-filter="ALL">전체</button>
+<button class="filterBtn" data-filter="A. 단어 — 관사·철자까지">A</button><button class="filterBtn" data-filter="B. 단어 — 형용사·표현">B</button><button class="filterBtn" data-filter="C. 숫자">C</button><button class="filterBtn" data-filter="D. 현재형 — 불규칙동사">D</button><button class="filterBtn" data-filter="E. 긍정 명령형">E</button><button class="filterBtn" data-filter="F. 부정 명령형">F</button><button class="filterBtn" data-filter="G. hay / estar / tener">G</button><button class="filterBtn" data-filter="H. 위치·지시사·서수">H</button><button class="filterBtn" data-filter="I. 길 안내·대중교통">I</button><button class="filterBtn" data-filter="J. 서술형 — 집 묘사">J</button><button class="filterBtn" data-filter="K. 서술형 — 길 안내·회화">K</button>
+</div>
+</div>
+
+<div id="quiz">
+
+    <article class="qcard" data-q="1" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la casa&quot;]">
+      <div class="qtop"><span class="qnum">1</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 집</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="2" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la habitación&quot;]">
+      <div class="qtop"><span class="qnum">2</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 방</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="3" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el mueble&quot;]">
+      <div class="qtop"><span class="qnum">3</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 가구</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="4" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la cama&quot;]">
+      <div class="qtop"><span class="qnum">4</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 침대</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="5" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el armario&quot;]">
+      <div class="qtop"><span class="qnum">5</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 옷장</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="6" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el escritorio&quot;]">
+      <div class="qtop"><span class="qnum">6</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 책상</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="7" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el cuarto de baño&quot;, &quot;el baño&quot;]">
+      <div class="qtop"><span class="qnum">7</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 화장실</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="8" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la cocina&quot;]">
+      <div class="qtop"><span class="qnum">8</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 부엌/주방</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="9" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la lavadora&quot;]">
+      <div class="qtop"><span class="qnum">9</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 세탁기</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="10" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el frigorífico&quot;, &quot;la nevera&quot;, &quot;el refrigerador&quot;]">
+      <div class="qtop"><span class="qnum">10</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 냉장고</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="11" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la cocina de gas&quot;]">
+      <div class="qtop"><span class="qnum">11</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 가스레인지</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="12" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el horno microondas&quot;]">
+      <div class="qtop"><span class="qnum">12</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 전자레인지</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="13" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el comedor&quot;]">
+      <div class="qtop"><span class="qnum">13</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 식당</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="14" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el dormitorio&quot;]">
+      <div class="qtop"><span class="qnum">14</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 침실</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="15" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el cuarto de estudio&quot;]">
+      <div class="qtop"><span class="qnum">15</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 서재/공부방</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="16" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el sofá&quot;]">
+      <div class="qtop"><span class="qnum">16</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 소파</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="17" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la ducha&quot;]">
+      <div class="qtop"><span class="qnum">17</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 샤워부스</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="18" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la silla&quot;]">
+      <div class="qtop"><span class="qnum">18</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 의자</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="19" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la bañera&quot;]">
+      <div class="qtop"><span class="qnum">19</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 욕조</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="20" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el lavabo&quot;]">
+      <div class="qtop"><span class="qnum">20</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 세면대</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="21" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el cuadro&quot;]">
+      <div class="qtop"><span class="qnum">21</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 그림/액자 틀</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="22" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la mesilla&quot;]">
+      <div class="qtop"><span class="qnum">22</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 작은 테이블/협탁</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="23" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la lámpara&quot;]">
+      <div class="qtop"><span class="qnum">23</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 램프/전등</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="24" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la televisión&quot;]">
+      <div class="qtop"><span class="qnum">24</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 텔레비전</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="25" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el ordenador&quot;, &quot;la computadora&quot;]">
+      <div class="qtop"><span class="qnum">25</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 컴퓨터</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="26" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la ventana&quot;]">
+      <div class="qtop"><span class="qnum">26</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 창문</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="27" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el cojín&quot;]">
+      <div class="qtop"><span class="qnum">27</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 쿠션</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="28" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el salón&quot;, &quot;la sala de estar&quot;]">
+      <div class="qtop"><span class="qnum">28</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 거실</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="29" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la maceta&quot;]">
+      <div class="qtop"><span class="qnum">29</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 화분</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="30" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la alfombra&quot;]">
+      <div class="qtop"><span class="qnum">30</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 카펫</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="31" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;las escaleras&quot;]">
+      <div class="qtop"><span class="qnum">31</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 계단</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="32" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el espejo&quot;]">
+      <div class="qtop"><span class="qnum">32</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 거울</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="33" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el papel higiénico&quot;]">
+      <div class="qtop"><span class="qnum">33</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 화장지</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="34" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la toalla&quot;]">
+      <div class="qtop"><span class="qnum">34</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 수건</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="35" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la almohada&quot;]">
+      <div class="qtop"><span class="qnum">35</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 베개</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="36" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el fregadero&quot;]">
+      <div class="qtop"><span class="qnum">36</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 싱크대</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="37" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el lavaplatos&quot;]">
+      <div class="qtop"><span class="qnum">37</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 식기세척기</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="38" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la tetera&quot;]">
+      <div class="qtop"><span class="qnum">38</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 주전자</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="39" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;el balcón&quot;]">
+      <div class="qtop"><span class="qnum">39</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 발코니</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="40" data-section="A. 단어 — 관사·철자까지" data-answers="[&quot;la parada de autobús&quot;]">
+      <div class="qtop"><span class="qnum">40</span><span class="sectiontag">A. 단어 — 관사·철자까지</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 버스 정류장</div>
+      <div class="hint">명사는 관사까지 쓰기</div>
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="41" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;pequeño&quot;]">
+      <div class="qtop"><span class="qnum">41</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 작은</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="42" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;agradable&quot;]">
+      <div class="qtop"><span class="qnum">42</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 쾌적한</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="43" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;bonito&quot;]">
+      <div class="qtop"><span class="qnum">43</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 예쁜</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="44" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;amable&quot;]">
+      <div class="qtop"><span class="qnum">44</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 친절한</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="45" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;luminoso&quot;]">
+      <div class="qtop"><span class="qnum">45</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 밝은/햇빛이 잘 드는</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="46" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;nuevo&quot;]">
+      <div class="qtop"><span class="qnum">46</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 새로운</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="47" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;cómodo&quot;]">
+      <div class="qtop"><span class="qnum">47</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 편안한</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="48" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;moderno&quot;]">
+      <div class="qtop"><span class="qnum">48</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 현대적인</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="49" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;grande&quot;]">
+      <div class="qtop"><span class="qnum">49</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 큰</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="50" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;amplio&quot;]">
+      <div class="qtop"><span class="qnum">50</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 넓은</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="51" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;estrecho&quot;]">
+      <div class="qtop"><span class="qnum">51</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 좁은</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="52" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;completo&quot;]">
+      <div class="qtop"><span class="qnum">52</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 완전한/전부 있는</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="53" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;exterior&quot;]">
+      <div class="qtop"><span class="qnum">53</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 외부의</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="54" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;interior&quot;]">
+      <div class="qtop"><span class="qnum">54</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 내부의</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="55" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;antiguo&quot;]">
+      <div class="qtop"><span class="qnum">55</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 오래된</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="56" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;precioso&quot;]">
+      <div class="qtop"><span class="qnum">56</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 아름다운</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="57" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;bien de precio&quot;]">
+      <div class="qtop"><span class="qnum">57</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 가격이 좋은</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="58" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;bien comunicado&quot;]">
+      <div class="qtop"><span class="qnum">58</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 교통이 편리한</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="59" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;cerca de&quot;]">
+      <div class="qtop"><span class="qnum">59</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: ~에서 가까운</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="60" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;a pie&quot;]">
+      <div class="qtop"><span class="qnum">60</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 걸어서</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="61" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;andando&quot;]">
+      <div class="qtop"><span class="qnum">61</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 걸어서(동의 표현)</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="62" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;unos&quot;]">
+      <div class="qtop"><span class="qnum">62</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 약/대략</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="63" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;más o menos&quot;]">
+      <div class="qtop"><span class="qnum">63</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 약/대략(다른 표현)</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="64" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;bastante&quot;]">
+      <div class="qtop"><span class="qnum">64</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 충분히</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="65" data-section="B. 단어 — 형용사·표현" data-answers="[&quot;al mes&quot;]">
+      <div class="qtop"><span class="qnum">65</span><span class="sectiontag">B. 단어 — 형용사·표현</span></div>
+      <div class="prompt">다음을 스페인어로 쓰세요: 한 달에</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="66" data-section="C. 숫자" data-answers="[&quot;cien&quot;]">
+      <div class="qtop"><span class="qnum">66</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">100 (정확히 100)를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="67" data-section="C. 숫자" data-answers="[&quot;ciento uno&quot;]">
+      <div class="qtop"><span class="qnum">67</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">101를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="68" data-section="C. 숫자" data-answers="[&quot;doscientos&quot;]">
+      <div class="qtop"><span class="qnum">68</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">200를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="69" data-section="C. 숫자" data-answers="[&quot;trescientos&quot;]">
+      <div class="qtop"><span class="qnum">69</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">300를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="70" data-section="C. 숫자" data-answers="[&quot;cuatrocientos&quot;]">
+      <div class="qtop"><span class="qnum">70</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">400를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="71" data-section="C. 숫자" data-answers="[&quot;quinientos&quot;]">
+      <div class="qtop"><span class="qnum">71</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">500를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="72" data-section="C. 숫자" data-answers="[&quot;seiscientos&quot;]">
+      <div class="qtop"><span class="qnum">72</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">600를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="73" data-section="C. 숫자" data-answers="[&quot;setecientos&quot;]">
+      <div class="qtop"><span class="qnum">73</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">700를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="74" data-section="C. 숫자" data-answers="[&quot;ochocientos&quot;]">
+      <div class="qtop"><span class="qnum">74</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">800를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="75" data-section="C. 숫자" data-answers="[&quot;novecientos&quot;]">
+      <div class="qtop"><span class="qnum">75</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">900를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="76" data-section="C. 숫자" data-answers="[&quot;novecientos noventa y nueve&quot;]">
+      <div class="qtop"><span class="qnum">76</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">999를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="77" data-section="C. 숫자" data-answers="[&quot;mil&quot;]">
+      <div class="qtop"><span class="qnum">77</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">1,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="78" data-section="C. 숫자" data-answers="[&quot;dos mil&quot;]">
+      <div class="qtop"><span class="qnum">78</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">2,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="79" data-section="C. 숫자" data-answers="[&quot;nueve mil&quot;]">
+      <div class="qtop"><span class="qnum">79</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">9,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="80" data-section="C. 숫자" data-answers="[&quot;diez mil&quot;]">
+      <div class="qtop"><span class="qnum">80</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">10,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="81" data-section="C. 숫자" data-answers="[&quot;cincuenta mil&quot;]">
+      <div class="qtop"><span class="qnum">81</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">50,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="82" data-section="C. 숫자" data-answers="[&quot;cien mil&quot;]">
+      <div class="qtop"><span class="qnum">82</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">100,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="83" data-section="C. 숫자" data-answers="[&quot;doscientos mil&quot;]">
+      <div class="qtop"><span class="qnum">83</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">200,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="84" data-section="C. 숫자" data-answers="[&quot;novecientos mil&quot;]">
+      <div class="qtop"><span class="qnum">84</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">900,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="85" data-section="C. 숫자" data-answers="[&quot;un millón&quot;]">
+      <div class="qtop"><span class="qnum">85</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">1,000,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="86" data-section="C. 숫자" data-answers="[&quot;dos millones&quot;]">
+      <div class="qtop"><span class="qnum">86</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">2,000,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="87" data-section="C. 숫자" data-answers="[&quot;diez millones&quot;]">
+      <div class="qtop"><span class="qnum">87</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">10,000,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="88" data-section="C. 숫자" data-answers="[&quot;veinte millones&quot;]">
+      <div class="qtop"><span class="qnum">88</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">20,000,000를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="89" data-section="C. 숫자" data-answers="[&quot;mil personas&quot;]">
+      <div class="qtop"><span class="qnum">89</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">1,000명의 사람를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="90" data-section="C. 숫자" data-answers="[&quot;un millón de personas&quot;]">
+      <div class="qtop"><span class="qnum">90</span><span class="sectiontag">C. 숫자</span></div>
+      <div class="prompt">1,000,000명의 사람를 스페인어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="91" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;hago&quot;]">
+      <div class="qtop"><span class="qnum">91</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: hacer — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="92" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;hacéis&quot;]">
+      <div class="qtop"><span class="qnum">92</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: hacer — vosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="93" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;tengo&quot;]">
+      <div class="qtop"><span class="qnum">93</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: tener — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="94" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;tienes&quot;]">
+      <div class="qtop"><span class="qnum">94</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: tener — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="95" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;tienen&quot;]">
+      <div class="qtop"><span class="qnum">95</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: tener — ellos</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="96" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;voy&quot;]">
+      <div class="qtop"><span class="qnum">96</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: ir — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="97" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;vamos&quot;]">
+      <div class="qtop"><span class="qnum">97</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: ir — nosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="98" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;vais&quot;]">
+      <div class="qtop"><span class="qnum">98</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: ir — vosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="99" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;vengo&quot;]">
+      <div class="qtop"><span class="qnum">99</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: venir — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="100" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;viene&quot;]">
+      <div class="qtop"><span class="qnum">100</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: venir — él/ella</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="101" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;salgo&quot;]">
+      <div class="qtop"><span class="qnum">101</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: salir — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="102" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;pongo&quot;]">
+      <div class="qtop"><span class="qnum">102</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: poner — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="103" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;oigo&quot;]">
+      <div class="qtop"><span class="qnum">103</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: oír — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="104" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;oyes&quot;]">
+      <div class="qtop"><span class="qnum">104</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: oír — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="105" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;oís&quot;]">
+      <div class="qtop"><span class="qnum">105</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: oír — vosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="106" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;sirvo&quot;]">
+      <div class="qtop"><span class="qnum">106</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: servir — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="107" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;servimos&quot;]">
+      <div class="qtop"><span class="qnum">107</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: servir — nosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="108" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;me pongo&quot;]">
+      <div class="qtop"><span class="qnum">108</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: ponerse — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="109" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;te vas&quot;]">
+      <div class="qtop"><span class="qnum">109</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: irse — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="110" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;vuelvo&quot;]">
+      <div class="qtop"><span class="qnum">110</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: volver — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="111" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;quieren&quot;]">
+      <div class="qtop"><span class="qnum">111</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: querer — ellos</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="112" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;empezamos&quot;]">
+      <div class="qtop"><span class="qnum">112</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: empezar — nosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="113" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;puedes&quot;]">
+      <div class="qtop"><span class="qnum">113</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: poder — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="114" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;se pierde&quot;]">
+      <div class="qtop"><span class="qnum">114</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: perderse — él/ella</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="115" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;cuesto&quot;]">
+      <div class="qtop"><span class="qnum">115</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: costar — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="116" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;cerramos&quot;]">
+      <div class="qtop"><span class="qnum">116</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: cerrar — nosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="117" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;te acuestas&quot;]">
+      <div class="qtop"><span class="qnum">117</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: acostarse — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="118" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;duermen&quot;]">
+      <div class="qtop"><span class="qnum">118</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: dormir — ellos</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="119" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;digo&quot;]">
+      <div class="qtop"><span class="qnum">119</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: decir — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="120" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;pedimos&quot;]">
+      <div class="qtop"><span class="qnum">120</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: pedir — nosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="121" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;sigo&quot;]">
+      <div class="qtop"><span class="qnum">121</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: seguir — yo</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="122" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;seguís&quot;]">
+      <div class="qtop"><span class="qnum">122</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: seguir — vosotros</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="123" data-section="D. 현재형 — 불규칙동사" data-answers="[&quot;enciende&quot;]">
+      <div class="qtop"><span class="qnum">123</span><span class="sectiontag">D. 현재형 — 불규칙동사</span></div>
+      <div class="prompt">현재형으로 활용하세요: encender — él/ella</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="124" data-section="E. 긍정 명령형" data-answers="[&quot;habla&quot;]">
+      <div class="qtop"><span class="qnum">124</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: hablar — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="125" data-section="E. 긍정 명령형" data-answers="[&quot;hable&quot;]">
+      <div class="qtop"><span class="qnum">125</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: hablar — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="126" data-section="E. 긍정 명령형" data-answers="[&quot;hablen&quot;]">
+      <div class="qtop"><span class="qnum">126</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: hablar — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="127" data-section="E. 긍정 명령형" data-answers="[&quot;come&quot;]">
+      <div class="qtop"><span class="qnum">127</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: comer — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="128" data-section="E. 긍정 명령형" data-answers="[&quot;coma&quot;]">
+      <div class="qtop"><span class="qnum">128</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: comer — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="129" data-section="E. 긍정 명령형" data-answers="[&quot;escriban&quot;]">
+      <div class="qtop"><span class="qnum">129</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: escribir — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="130" data-section="E. 긍정 명령형" data-answers="[&quot;pide&quot;]">
+      <div class="qtop"><span class="qnum">130</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: pedir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="131" data-section="E. 긍정 명령형" data-answers="[&quot;pida&quot;]">
+      <div class="qtop"><span class="qnum">131</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: pedir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="132" data-section="E. 긍정 명령형" data-answers="[&quot;sigue&quot;]">
+      <div class="qtop"><span class="qnum">132</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: seguir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="133" data-section="E. 긍정 명령형" data-answers="[&quot;sigan&quot;]">
+      <div class="qtop"><span class="qnum">133</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: seguir — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="134" data-section="E. 긍정 명령형" data-answers="[&quot;sirva&quot;]">
+      <div class="qtop"><span class="qnum">134</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: servir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="135" data-section="E. 긍정 명령형" data-answers="[&quot;cierra&quot;]">
+      <div class="qtop"><span class="qnum">135</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: cerrar — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="136" data-section="E. 긍정 명령형" data-answers="[&quot;cierre&quot;]">
+      <div class="qtop"><span class="qnum">136</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: cerrar — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="137" data-section="E. 긍정 명령형" data-answers="[&quot;enciende&quot;]">
+      <div class="qtop"><span class="qnum">137</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: encender — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="138" data-section="E. 긍정 명령형" data-answers="[&quot;duerman&quot;]">
+      <div class="qtop"><span class="qnum">138</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: dormir — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="139" data-section="E. 긍정 명령형" data-answers="[&quot;di&quot;]">
+      <div class="qtop"><span class="qnum">139</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: decir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="140" data-section="E. 긍정 명령형" data-answers="[&quot;diga&quot;]">
+      <div class="qtop"><span class="qnum">140</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: decir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="141" data-section="E. 긍정 명령형" data-answers="[&quot;haz&quot;]">
+      <div class="qtop"><span class="qnum">141</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: hacer — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="142" data-section="E. 긍정 명령형" data-answers="[&quot;hagan&quot;]">
+      <div class="qtop"><span class="qnum">142</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: hacer — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="143" data-section="E. 긍정 명령형" data-answers="[&quot;ve&quot;]">
+      <div class="qtop"><span class="qnum">143</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: ir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="144" data-section="E. 긍정 명령형" data-answers="[&quot;vaya&quot;]">
+      <div class="qtop"><span class="qnum">144</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: ir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="145" data-section="E. 긍정 명령형" data-answers="[&quot;pon&quot;]">
+      <div class="qtop"><span class="qnum">145</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: poner — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="146" data-section="E. 긍정 명령형" data-answers="[&quot;pongan&quot;]">
+      <div class="qtop"><span class="qnum">146</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: poner — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="147" data-section="E. 긍정 명령형" data-answers="[&quot;ten&quot;]">
+      <div class="qtop"><span class="qnum">147</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: tener — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="148" data-section="E. 긍정 명령형" data-answers="[&quot;ven&quot;]">
+      <div class="qtop"><span class="qnum">148</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: venir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="149" data-section="E. 긍정 명령형" data-answers="[&quot;venga&quot;]">
+      <div class="qtop"><span class="qnum">149</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: venir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="150" data-section="E. 긍정 명령형" data-answers="[&quot;sal&quot;]">
+      <div class="qtop"><span class="qnum">150</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: salir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="151" data-section="E. 긍정 명령형" data-answers="[&quot;oiga&quot;]">
+      <div class="qtop"><span class="qnum">151</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: oír — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="152" data-section="E. 긍정 명령형" data-answers="[&quot;oigan&quot;]">
+      <div class="qtop"><span class="qnum">152</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: oír — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="153" data-section="E. 긍정 명령형" data-answers="[&quot;cruza&quot;]">
+      <div class="qtop"><span class="qnum">153</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: cruzar — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="154" data-section="E. 긍정 명령형" data-answers="[&quot;cruce&quot;]">
+      <div class="qtop"><span class="qnum">154</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: cruzar — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="155" data-section="E. 긍정 명령형" data-answers="[&quot;crucen&quot;]">
+      <div class="qtop"><span class="qnum">155</span><span class="sectiontag">E. 긍정 명령형</span></div>
+      <div class="prompt">긍정 명령형으로 쓰세요: cruzar — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="156" data-section="F. 부정 명령형" data-answers="[&quot;no hables&quot;]">
+      <div class="qtop"><span class="qnum">156</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: hablar — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="157" data-section="F. 부정 명령형" data-answers="[&quot;no hable&quot;]">
+      <div class="qtop"><span class="qnum">157</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: hablar — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="158" data-section="F. 부정 명령형" data-answers="[&quot;no hablen&quot;]">
+      <div class="qtop"><span class="qnum">158</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: hablar — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="159" data-section="F. 부정 명령형" data-answers="[&quot;no comas&quot;]">
+      <div class="qtop"><span class="qnum">159</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: comer — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="160" data-section="F. 부정 명령형" data-answers="[&quot;no coma&quot;]">
+      <div class="qtop"><span class="qnum">160</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: comer — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="161" data-section="F. 부정 명령형" data-answers="[&quot;no coman&quot;]">
+      <div class="qtop"><span class="qnum">161</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: comer — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="162" data-section="F. 부정 명령형" data-answers="[&quot;no escribas&quot;]">
+      <div class="qtop"><span class="qnum">162</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: escribir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="163" data-section="F. 부정 명령형" data-answers="[&quot;no escriba&quot;]">
+      <div class="qtop"><span class="qnum">163</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: escribir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="164" data-section="F. 부정 명령형" data-answers="[&quot;no escriban&quot;]">
+      <div class="qtop"><span class="qnum">164</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: escribir — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="165" data-section="F. 부정 명령형" data-answers="[&quot;no pidas&quot;]">
+      <div class="qtop"><span class="qnum">165</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: pedir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="166" data-section="F. 부정 명령형" data-answers="[&quot;no pida&quot;]">
+      <div class="qtop"><span class="qnum">166</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: pedir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="167" data-section="F. 부정 명령형" data-answers="[&quot;no pidan&quot;]">
+      <div class="qtop"><span class="qnum">167</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: pedir — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="168" data-section="F. 부정 명령형" data-answers="[&quot;no sigas&quot;]">
+      <div class="qtop"><span class="qnum">168</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: seguir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="169" data-section="F. 부정 명령형" data-answers="[&quot;no siga&quot;]">
+      <div class="qtop"><span class="qnum">169</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: seguir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="170" data-section="F. 부정 명령형" data-answers="[&quot;no sigan&quot;]">
+      <div class="qtop"><span class="qnum">170</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: seguir — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="171" data-section="F. 부정 명령형" data-answers="[&quot;no sirvas&quot;]">
+      <div class="qtop"><span class="qnum">171</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: servir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="172" data-section="F. 부정 명령형" data-answers="[&quot;no sirva&quot;]">
+      <div class="qtop"><span class="qnum">172</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: servir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="173" data-section="F. 부정 명령형" data-answers="[&quot;no sirvan&quot;]">
+      <div class="qtop"><span class="qnum">173</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: servir — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="174" data-section="F. 부정 명령형" data-answers="[&quot;no cierres&quot;]">
+      <div class="qtop"><span class="qnum">174</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: cerrar — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="175" data-section="F. 부정 명령형" data-answers="[&quot;no cierre&quot;]">
+      <div class="qtop"><span class="qnum">175</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: cerrar — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="176" data-section="F. 부정 명령형" data-answers="[&quot;no cierren&quot;]">
+      <div class="qtop"><span class="qnum">176</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: cerrar — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="177" data-section="F. 부정 명령형" data-answers="[&quot;no enciendas&quot;]">
+      <div class="qtop"><span class="qnum">177</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: encender — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="178" data-section="F. 부정 명령형" data-answers="[&quot;no encienda&quot;]">
+      <div class="qtop"><span class="qnum">178</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: encender — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="179" data-section="F. 부정 명령형" data-answers="[&quot;no enciendan&quot;]">
+      <div class="qtop"><span class="qnum">179</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: encender — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="180" data-section="F. 부정 명령형" data-answers="[&quot;no duermas&quot;]">
+      <div class="qtop"><span class="qnum">180</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: dormir — tú</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="181" data-section="F. 부정 명령형" data-answers="[&quot;no duerma&quot;]">
+      <div class="qtop"><span class="qnum">181</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: dormir — usted</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="182" data-section="F. 부정 명령형" data-answers="[&quot;no duerman&quot;]">
+      <div class="qtop"><span class="qnum">182</span><span class="sectiontag">F. 부정 명령형</span></div>
+      <div class="prompt">부정 명령형으로 쓰세요: dormir — ustedes</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="183" data-section="G. hay / estar / tener" data-answers="[&quot;está&quot;]">
+      <div class="qtop"><span class="qnum">183</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>¿Dónde ___ el banco más cercano?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="184" data-section="G. hay / estar / tener" data-answers="[&quot;está&quot;]">
+      <div class="qtop"><span class="qnum">184</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>___ un poco lejos, a unos quinientos metros.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="185" data-section="G. hay / estar / tener" data-answers="[&quot;hay&quot;]">
+      <div class="qtop"><span class="qnum">185</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>¿___ una farmacia en esta calle?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="186" data-section="G. hay / estar / tener" data-answers="[&quot;hay&quot;]">
+      <div class="qtop"><span class="qnum">186</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>Sí, ___ una al final de esta calle.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="187" data-section="G. hay / estar / tener" data-answers="[&quot;está&quot;]">
+      <div class="qtop"><span class="qnum">187</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>¿Sabe dónde ___ el Cine Avenida?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="188" data-section="G. hay / estar / tener" data-answers="[&quot;está&quot;]">
+      <div class="qtop"><span class="qnum">188</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>Sí, ___ detrás de ese edificio.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="189" data-section="G. hay / estar / tener" data-answers="[&quot;hay&quot;]">
+      <div class="qtop"><span class="qnum">189</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>¿Dónde ___ una comisaría?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="190" data-section="G. hay / estar / tener" data-answers="[&quot;está&quot;]">
+      <div class="qtop"><span class="qnum">190</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>El Museo de Cera ___ cerca de aquí.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="191" data-section="G. hay / estar / tener" data-answers="[&quot;está&quot;]">
+      <div class="qtop"><span class="qnum">191</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>Sí, ___ en la siguiente calle.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="192" data-section="G. hay / estar / tener" data-answers="[&quot;hay&quot;]">
+      <div class="qtop"><span class="qnum">192</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>¿Sabes si ___ un banco por aquí cerca?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="193" data-section="G. hay / estar / tener" data-answers="[&quot;tiene&quot;]">
+      <div class="qtop"><span class="qnum">193</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>Esta habitación ___ mucha luz.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="194" data-section="G. hay / estar / tener" data-answers="[&quot;hay&quot;]">
+      <div class="qtop"><span class="qnum">194</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>En la habitación ___ una cama, un armario y un escritorio.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="195" data-section="G. hay / estar / tener" data-answers="[&quot;está&quot;]">
+      <div class="qtop"><span class="qnum">195</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>El baño ___ a la izquierda de tu habitación.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="196" data-section="G. hay / estar / tener" data-answers="[&quot;está&quot;]">
+      <div class="qtop"><span class="qnum">196</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>La cocina ___ al fondo.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="197" data-section="G. hay / estar / tener" data-answers="[&quot;hay&quot;]">
+      <div class="qtop"><span class="qnum">197</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>¿___ una lavadora en la cocina?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="198" data-section="G. hay / estar / tener" data-answers="[&quot;tiene&quot;]">
+      <div class="qtop"><span class="qnum">198</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>El piso ___ tres habitaciones.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="199" data-section="G. hay / estar / tener" data-answers="[&quot;tiene&quot;]">
+      <div class="qtop"><span class="qnum">199</span><span class="sectiontag">G. hay / estar / tener</span></div>
+      <div class="prompt">빈칸에 hay / estar / tener의 알맞은 형태를 쓰세요:<br>El piso no ___ garaje.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="200" data-section="H. 위치·지시사·서수" data-answers="[&quot;aquí&quot;]">
+      <div class="qtop"><span class="qnum">200</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 여기</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="201" data-section="H. 위치·지시사·서수" data-answers="[&quot;ahí&quot;]">
+      <div class="qtop"><span class="qnum">201</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 거기</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="202" data-section="H. 위치·지시사·서수" data-answers="[&quot;allí&quot;]">
+      <div class="qtop"><span class="qnum">202</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 저기</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="203" data-section="H. 위치·지시사·서수" data-answers="[&quot;este banco&quot;]">
+      <div class="qtop"><span class="qnum">203</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 이 은행</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="204" data-section="H. 위치·지시사·서수" data-answers="[&quot;ese banco&quot;]">
+      <div class="qtop"><span class="qnum">204</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 그 은행</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="205" data-section="H. 위치·지시사·서수" data-answers="[&quot;aquel banco&quot;]">
+      <div class="qtop"><span class="qnum">205</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 저 은행</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="206" data-section="H. 위치·지시사·서수" data-answers="[&quot;esta casa&quot;]">
+      <div class="qtop"><span class="qnum">206</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 이 집</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="207" data-section="H. 위치·지시사·서수" data-answers="[&quot;esa casa&quot;]">
+      <div class="qtop"><span class="qnum">207</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 그 집</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="208" data-section="H. 위치·지시사·서수" data-answers="[&quot;aquella casa&quot;]">
+      <div class="qtop"><span class="qnum">208</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 저 집</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="209" data-section="H. 위치·지시사·서수" data-answers="[&quot;estas habitaciones&quot;]">
+      <div class="qtop"><span class="qnum">209</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 이 방들</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="210" data-section="H. 위치·지시사·서수" data-answers="[&quot;esas habitaciones&quot;]">
+      <div class="qtop"><span class="qnum">210</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 그 방들</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="211" data-section="H. 위치·지시사·서수" data-answers="[&quot;aquellas habitaciones&quot;]">
+      <div class="qtop"><span class="qnum">211</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 저 방들</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="212" data-section="H. 위치·지시사·서수" data-answers="[&quot;primero&quot;]">
+      <div class="qtop"><span class="qnum">212</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 첫 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="213" data-section="H. 위치·지시사·서수" data-answers="[&quot;segundo&quot;]">
+      <div class="qtop"><span class="qnum">213</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 두 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="214" data-section="H. 위치·지시사·서수" data-answers="[&quot;tercera&quot;]">
+      <div class="qtop"><span class="qnum">214</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 세 번째(여성형)</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="215" data-section="H. 위치·지시사·서수" data-answers="[&quot;cuarto&quot;]">
+      <div class="qtop"><span class="qnum">215</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 네 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="216" data-section="H. 위치·지시사·서수" data-answers="[&quot;quinto&quot;]">
+      <div class="qtop"><span class="qnum">216</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 다섯 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="217" data-section="H. 위치·지시사·서수" data-answers="[&quot;sexto&quot;]">
+      <div class="qtop"><span class="qnum">217</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 여섯 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="218" data-section="H. 위치·지시사·서수" data-answers="[&quot;séptimo&quot;]">
+      <div class="qtop"><span class="qnum">218</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 일곱 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="219" data-section="H. 위치·지시사·서수" data-answers="[&quot;octavo&quot;]">
+      <div class="qtop"><span class="qnum">219</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 여덟 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="220" data-section="H. 위치·지시사·서수" data-answers="[&quot;noveno&quot;]">
+      <div class="qtop"><span class="qnum">220</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 아홉 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="221" data-section="H. 위치·지시사·서수" data-answers="[&quot;décimo&quot;]">
+      <div class="qtop"><span class="qnum">221</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 열 번째</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="222" data-section="H. 위치·지시사·서수" data-answers="[&quot;primer banco&quot;]">
+      <div class="qtop"><span class="qnum">222</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 첫 번째 은행</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="223" data-section="H. 위치·지시사·서수" data-answers="[&quot;segunda calle&quot;]">
+      <div class="qtop"><span class="qnum">223</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 두 번째 길</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="224" data-section="H. 위치·지시사·서수" data-answers="[&quot;tercera calle&quot;]">
+      <div class="qtop"><span class="qnum">224</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: 세 번째 길</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="225" data-section="H. 위치·지시사·서수" data-answers="[&quot;hasta&quot;]">
+      <div class="qtop"><span class="qnum">225</span><span class="sectiontag">H. 위치·지시사·서수</span></div>
+      <div class="prompt">스페인어로 쓰세요: ~까지</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="226" data-section="I. 길 안내·대중교통" data-answers="[&quot;siga todo recto&quot;]">
+      <div class="qtop"><span class="qnum">226</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 계속 쭉 가세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="227" data-section="I. 길 안내·대중교통" data-answers="[&quot;cruce la calle&quot;]">
+      <div class="qtop"><span class="qnum">227</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 길을 건너세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="228" data-section="I. 길 안내·대중교통" data-answers="[&quot;tome la segunda calle a la derecha&quot;]">
+      <div class="qtop"><span class="qnum">228</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 오른쪽 두 번째 길로 들어가세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="229" data-section="I. 길 안내·대중교통" data-answers="[&quot;gire a la izquierda&quot;]">
+      <div class="qtop"><span class="qnum">229</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 왼쪽으로 도세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="230" data-section="I. 길 안내·대중교통" data-answers="[&quot;gire a la derecha&quot;]">
+      <div class="qtop"><span class="qnum">230</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 오른쪽으로 도세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="231" data-section="I. 길 안내·대중교통" data-answers="[&quot;tomar&quot;]">
+      <div class="qtop"><span class="qnum">231</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 타다/이용하다 (원형)</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="232" data-section="I. 길 안내·대중교통" data-answers="[&quot;subir&quot;]">
+      <div class="qtop"><span class="qnum">232</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 올라타다 (원형)</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="233" data-section="I. 길 안내·대중교통" data-answers="[&quot;bajar&quot;]">
+      <div class="qtop"><span class="qnum">233</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 내리다 (원형)</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="234" data-section="I. 길 안내·대중교통" data-answers="[&quot;cambiar&quot;]">
+      <div class="qtop"><span class="qnum">234</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 갈아타다 (원형)</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="235" data-section="I. 길 안내·대중교통" data-answers="[&quot;sube en la estación Franklin&quot;]">
+      <div class="qtop"><span class="qnum">235</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 프랭클린 역에서 타세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="236" data-section="I. 길 안내·대중교통" data-answers="[&quot;baja en la quinta parada&quot;]">
+      <div class="qtop"><span class="qnum">236</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 다섯 번째 정류장에서 내리세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="237" data-section="I. 길 안내·대중교통" data-answers="[&quot;cambia a la línea 2&quot;]">
+      <div class="qtop"><span class="qnum">237</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 2호선으로 갈아타세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="238" data-section="I. 길 안내·대중교통" data-answers="[&quot;tome la primera calle a la derecha&quot;]">
+      <div class="qtop"><span class="qnum">238</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 오른쪽 첫 번째 길로 들어가세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="239" data-section="I. 길 안내·대중교통" data-answers="[&quot;siga un poco más&quot;]">
+      <div class="qtop"><span class="qnum">239</span><span class="sectiontag">I. 길 안내·대중교통</span></div>
+      <div class="prompt">스페인어로 쓰세요: 조금 더 가세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="240" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Esta habitación es pequeña, pero es agradable&quot;, &quot;La habitación es pequeña, pero es agradable&quot;]">
+      <div class="qtop"><span class="qnum">240</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>이 방은 작지만 쾌적하다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="241" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Esta habitación tiene mucha luz&quot;, &quot;La habitación tiene mucha luz&quot;]">
+      <div class="qtop"><span class="qnum">241</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>이 방은 빛이 많이 든다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="242" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Hay una cama, un armario y un escritorio&quot;]">
+      <div class="qtop"><span class="qnum">242</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>침대 하나, 옷장 하나, 책상 하나가 있다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="243" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;El baño está a la izquierda de tu habitación&quot;]">
+      <div class="qtop"><span class="qnum">243</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>화장실은 네 방의 왼쪽에 있다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="244" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;La cocina está al fondo&quot;]">
+      <div class="qtop"><span class="qnum">244</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>부엌은 안쪽 끝에 있다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="245" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;¿Hay una lavadora en la cocina?&quot;]">
+      <div class="qtop"><span class="qnum">245</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>부엌에 세탁기가 있나요?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="246" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Sí, hay una lavadora y un frigorífico&quot;, &quot;Sí, hay una lavadora y una nevera&quot;, &quot;Sí, hay una lavadora y un refrigerador&quot;]">
+      <div class="qtop"><span class="qnum">246</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>네, 세탁기와 냉장고가 하나씩 있다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="247" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;La casa es nueva y tiene dos plantas&quot;, &quot;Es una casa nueva de dos plantas&quot;]">
+      <div class="qtop"><span class="qnum">247</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>그 집은 새 집이고 2층이다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="248" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;La casa es muy iluminada y está bien comunicada&quot;, &quot;Es muy iluminada y está bien comunicada&quot;]">
+      <div class="qtop"><span class="qnum">248</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>그 집은 매우 밝고 교통이 편리하다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="249" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;La casa está cerca de una parada de autobús&quot;]">
+      <div class="qtop"><span class="qnum">249</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>그 집은 버스 정류장에서 가깝다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="250" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Este piso es pequeño, pero es nuevo, moderno y muy bonito&quot;]">
+      <div class="qtop"><span class="qnum">250</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>이 아파트는 작지만 새롭고 현대적이며 매우 예쁘다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="251" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Tiene tres habitaciones&quot;]">
+      <div class="qtop"><span class="qnum">251</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>방이 세 개 있다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="252" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;También tiene un salón, una cocina y un cuarto de baño&quot;]">
+      <div class="qtop"><span class="qnum">252</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>또한 거실, 부엌, 화장실이 하나씩 있다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="253" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Tiene un balcón pequeño, pero no tiene garaje&quot;]">
+      <div class="qtop"><span class="qnum">253</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>작은 발코니는 있지만 차고는 없다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="254" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Está un poco lejos de la escuela&quot;]">
+      <div class="qtop"><span class="qnum">254</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>학교에서 조금 멀다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="255" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Está a unos treinta minutos a pie&quot;, &quot;Está a unos treinta minutos andando&quot;]">
+      <div class="qtop"><span class="qnum">255</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>걸어서 약 30분 거리다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="256" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;¿Qué tipo de casa es?&quot;]">
+      <div class="qtop"><span class="qnum">256</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>어떤 종류의 집이야?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="257" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;¿Dónde está el sofá?&quot;]">
+      <div class="qtop"><span class="qnum">257</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>소파는 어디에 있어?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="258" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;El sofá está en frente de la ventana&quot;, &quot;El sofá está enfrente de la ventana&quot;]">
+      <div class="qtop"><span class="qnum">258</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>소파는 창문 맞은편에 있다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="259" data-section="J. 서술형 — 집 묘사" data-answers="[&quot;Hay una cama, un escritorio, un armario, una mesilla y una silla&quot;]">
+      <div class="qtop"><span class="qnum">259</span><span class="sectiontag">J. 서술형 — 집 묘사</span></div>
+      <div class="prompt">스페인어로 문장을 쓰세요:<br>방에는 침대, 책상, 옷장, 협탁, 의자가 있다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="260" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;Oiga, perdone, ¿hay una gasolinera cerca de aquí?&quot;, &quot;Perdone, ¿hay una gasolinera cerca de aquí?&quot;]">
+      <div class="qtop"><span class="qnum">260</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>실례합니다. 이 근처에 주유소가 있나요?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="261" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;Sí, hay una aquí al lado&quot;]">
+      <div class="qtop"><span class="qnum">261</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>네, 바로 여기 옆에 하나 있어요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="262" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;¿Y cómo voy hasta allí?&quot;]">
+      <div class="qtop"><span class="qnum">262</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>그럼 거기까지 어떻게 가나요?</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="263" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;Gire en la primera calle a la derecha&quot;]">
+      <div class="qtop"><span class="qnum">263</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>오른쪽 첫 번째 길에서 도세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="264" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;Siga todo recto&quot;]">
+      <div class="qtop"><span class="qnum">264</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>쭉 가세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="265" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;Cruce la plaza&quot;]">
+      <div class="qtop"><span class="qnum">265</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>광장을 건너세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="266" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;Siga un poco más&quot;]">
+      <div class="qtop"><span class="qnum">266</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>조금 더 가세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="267" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;Luego gire en la segunda calle a la izquierda&quot;]">
+      <div class="qtop"><span class="qnum">267</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>그다음 왼쪽 두 번째 길에서 도세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="268" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;De acuerdo. Muchas gracias&quot;]">
+      <div class="qtop"><span class="qnum">268</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>알겠습니다. 정말 감사합니다.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="269" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;De nada&quot;, &quot;No hay de qué&quot;]">
+      <div class="qtop"><span class="qnum">269</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">스페인어로 쓰세요:<br>천만에요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+    <article class="qcard" data-q="270" data-section="K. 서술형 — 길 안내·회화" data-answers="[&quot;~인지&quot;, &quot;인지&quot;, &quot;~인지 여부&quot;]">
+      <div class="qtop"><span class="qnum">270</span><span class="sectiontag">K. 서술형 — 길 안내·회화</span></div>
+      <div class="prompt">‘¿Sabes si hay un banco...?’에서 si의 뜻을 한국어로 쓰세요.</div>
+      
+      <input class="answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="정답 입력">
+      <div class="feedback"></div>
+      <div class="model"></div>
+    </article>
+    
+</div>
+</div>
+
+<div class="bottom">
+<div class="bottomIn">
+<button id="gradeAnswered" class="action primary">푼 것만 채점</button>
+<button id="wrongOnly" class="action secondary">오답만 보기</button>
+<button id="showAll" class="action secondary">전체 보기</button>
+<button id="reset" class="action danger">초기화</button>
+<div id="score" class="score"></div>
+</div>
+</div>
+
+<script>
+(function(){
+const cards=[...document.querySelectorAll('.qcard')];
+const score=document.getElementById('score');
+const summary=document.getElementById('summary');
+
+const STORAGE_KEY='spanish5_1grade_progress_v1';
+
+function saveProgress(){
+  try{
+    const data={
+      answers: cards.map(c=>c.querySelector('.answer').value),
+      filter: document.querySelector('.filterBtn.active,.allBtn.active')?.dataset.filter || 'ALL',
+      scrollY: window.scrollY
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }catch(e){}
+}
+function loadProgress(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const data=JSON.parse(raw);
+    if(Array.isArray(data.answers)){
+      cards.forEach((c,i)=>{
+        if(typeof data.answers[i]==='string'){
+          c.querySelector('.answer').value=data.answers[i];
+        }
+      });
+    }
+    const f=data.filter || 'ALL';
+    const btn=[...document.querySelectorAll('.filterBtn,.allBtn')].find(b=>b.dataset.filter===f);
+    if(btn){
+      document.querySelectorAll('.filterBtn,.allBtn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      cards.forEach(c=>c.classList.toggle('hidden',f!=='ALL' && c.dataset.section!==f));
+    }
+    if(typeof data.scrollY==='number'){
+      setTimeout(()=>window.scrollTo(0,data.scrollY),100);
+    }
+  }catch(e){}
+}
+
+function norm(s){
+ return (s||'')
+   .normalize('NFC')
+   .trim()
+   .toLowerCase()
+   .replace(/[¿?¡!.,;:]+/g,'')
+   .replace(/\s+/g,' ');
+}
+function stripAccents(s){
+ return norm(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC');
+}
+function answers(card){
+ try{return JSON.parse(card.dataset.answers);}catch(e){return [];}
+}
+function gradeCard(card){
+ const input=card.querySelector('.answer');
+ const raw=input.value;
+ card.classList.remove('correct','accent','wrong','graded');
+ const fb=card.querySelector('.feedback');
+ const model=card.querySelector('.model');
+ if(!raw.trim()){fb.textContent='';model.textContent='';return null;}
+ const ans=answers(card);
+ const n=norm(raw);
+ const exact=ans.some(a=>norm(a)===n);
+ const accentOnly=!exact && ans.some(a=>stripAccents(a)===stripAccents(raw));
+ card.classList.add('graded');
+ model.textContent='정답 예: '+ans[0]+(ans.length>1?'  (다른 허용 답안 있음)':'');
+ if(exact){card.classList.add('correct');fb.textContent='정답 ✓';return 'correct';}
+ if(accentOnly){card.classList.add('accent');fb.textContent='거의 정답 — 강세/악센트 확인';return 'accent';}
+ card.classList.add('wrong');fb.textContent='오답 ✗';return 'wrong';
+}
+function gradeAnswered(){
+ let done=0,good=0,accent=0,bad=0;
+ cards.forEach(c=>{
+  if(c.classList.contains('hidden')) return;
+  if(c.querySelector('.answer').value.trim()){
+   done++;
+   const r=gradeCard(c);
+   if(r==='correct')good++;
+   else if(r==='accent')accent++;
+   else if(r==='wrong')bad++;
+  }
+ });
+ const pct=done?Math.round(good/done*100):0;
+ score.textContent=done?`정답 ${good} / ${done}`:'아직 답한 문제가 없습니다';
+ summary.className='summary show';
+ summary.innerHTML=`<strong>${good} / ${done} 정답 (${pct}%)</strong><br>
+ 강세·악센트만 아쉬움: <b>${accent}</b> · 오답: <b>${bad}</b><br>
+ <span style="color:#6b7280;font-size:13px">※ 강세 오류는 ‘거의 정답’으로 따로 표시하고 정답 점수에는 포함하지 않았습니다.</span>`;
+ saveProgress();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('gradeAnswered').addEventListener('click',gradeAnswered);
+
+document.querySelectorAll('.answer').forEach(inp=>{
+ inp.addEventListener('input',saveProgress);
+ inp.addEventListener('keydown',e=>{
+   if(e.key==='Enter'){
+     e.preventDefault();
+     const card=inp.closest('.qcard');
+     gradeCard(card);
+     const visibles=cards.filter(c=>!c.classList.contains('hidden'));
+     const pos=visibles.indexOf(card);
+     if(pos>=0 && pos<visibles.length-1) visibles[pos+1].querySelector('.answer').focus();
+   }
+ });
+});
+
+document.querySelectorAll('.filterBtn,.allBtn').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+   document.querySelectorAll('.filterBtn,.allBtn').forEach(b=>b.classList.remove('active'));
+   btn.classList.add('active');
+   const f=btn.dataset.filter;
+   cards.forEach(c=>c.classList.toggle('hidden',f!=='ALL' && c.dataset.section!==f));
+   summary.className='summary';
+   score.textContent='';
+   saveProgress();
+ });
+});
+
+document.getElementById('wrongOnly').addEventListener('click',()=>{
+ cards.forEach(c=>c.classList.toggle('hidden',!(c.classList.contains('wrong')||c.classList.contains('accent'))));
+});
+document.getElementById('showAll').addEventListener('click',()=>{
+ cards.forEach(c=>c.classList.remove('hidden'));
+ document.querySelectorAll('.filterBtn,.allBtn').forEach(b=>b.classList.remove('active'));
+ document.querySelector('.allBtn').classList.add('active');
+});
+document.getElementById('reset').addEventListener('click',()=>{
+ if(!confirm('입력한 답과 채점 결과를 모두 지울까요?')) return;
+ cards.forEach(c=>{
+   c.querySelector('.answer').value='';
+   c.querySelector('.feedback').textContent='';
+   c.querySelector('.model').textContent='';
+   c.classList.remove('correct','accent','wrong','graded','hidden');
+ });
+ summary.className='summary'; summary.innerHTML=''; score.textContent='';
+ try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+ document.querySelectorAll('.filterBtn,.allBtn').forEach(b=>b.classList.remove('active'));
+ document.querySelector('.allBtn').classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+});
+})();
+</script>
+</body>
+</html>
