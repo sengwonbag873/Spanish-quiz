@@ -4,7 +4,7 @@
 <div class="note"><b>이번 업데이트:</b> 기존 중복·혼합 단어문제를 정리하고 공식 단어장 순서로 재배치했습니다. 또한 <b>🔥 명령형+재귀/목적대명사+강세 46문제</b>와 <b>El mundo es un pañuelo.</b>를 추가했습니다.</div>
 <div class="controls"><div class="row" id="lessonBtns"><button type="button" class="active" data-lesson="ALL">전체</button><button type="button" data-lesson="5과">5과</button><button type="button" data-lesson="7과">7과</button><button type="button" data-lesson="5·7과">5·7 공통</button></div>
 <div class="row" id="partBtns"><button type="button" class="part active" data-cat="ALL">📚 전체 파트</button><button type="button" class="part" data-cat="단어 · 5과 공식 단어장">단어 · 5과 공식 단어장</button><button type="button" class="part" data-cat="단어 · 7과 공식 단어장">단어 · 7과 공식 단어장</button><button type="button" class="part" data-cat="C. 숫자">C. 숫자</button><button type="button" class="part" data-cat="D. 현재형 — 불규칙동사">D. 현재형 — 불규칙동사</button><button type="button" class="part" data-cat="E. 긍정 명령형">E. 긍정 명령형</button><button type="button" class="part" data-cat="F. 부정 명령형">F. 부정 명령형</button><button type="button" class="part" data-cat="G. hay / estar / tener">G. hay / estar / tener</button><button type="button" class="part" data-cat="H. 위치·지시사·서수">H. 위치·지시사·서수</button><button type="button" class="part" data-cat="I. 길 안내·대중교통">I. 길 안내·대중교통</button><button type="button" class="part" data-cat="J. 서술형 — 집 묘사">J. 서술형 — 집 묘사</button><button type="button" class="part" data-cat="K. 서술형 — 길 안내·회화">K. 서술형 — 길 안내·회화</button><button type="button" class="part" data-cat="현재형 — 불규칙동사">현재형 — 불규칙동사</button><button type="button" class="part" data-cat="긍정 명령형">긍정 명령형</button><button type="button" class="part" data-cat="숫자 — 고난도">숫자 — 고난도</button><button type="button" class="part" data-cat="숫자 — 여성형 함정">숫자 — 여성형 함정</button><button type="button" class="part" data-cat="hay / estar / tener">hay / estar / tener</button><button type="button" class="part" data-cat="대화문">대화문</button><button type="button" class="part" data-cat="속담·문화">속담·문화</button><button type="button" class="part" data-cat="길 안내">길 안내</button><button type="button" class="part" data-cat="불규칙동사 — 역추론">불규칙동사 — 역추론</button><button type="button" class="part" data-cat="부정 명령형 — 집중">부정 명령형 — 집중</button><button type="button" class="part" data-cat="서수 — 1~10">서수 — 1~10</button><button type="button" class="part" data-cat="지시형용사 — 성·수 일치">지시형용사 — 성·수 일치</button><button type="button" class="part" data-cat="교과서 대화문·속담 — 복원">교과서 대화문·속담 — 복원</button><button type="button" class="part" data-cat="교과서 대화문·속담 — 해석">교과서 대화문·속담 — 해석</button><button type="button" class="part" data-cat="숫자 — 최상위 함정">숫자 — 최상위 함정</button><button type="button" class="part" data-cat="🔥 킬러 · 명령형+대명사·강세">🔥 킬러 · 명령형+대명사·강세</button></div>
-<div class="row"><button id="r30">🎲 랜덤30</button><button id="r50">🎲 랜덤50</button><button id="wrong">❌ 오답만</button><button id="all">↩ 전체보기</button><button class="primary" id="grade">✓ 푼 것만 채점</button></div><div class="stats" id="stats">전체 997문제</div></div>
+<div class="row"><button id="r30">🎲 랜덤30</button><button id="r50">🎲 랜덤50</button><button id="wrong">❌ 오답만</button><button id="all">↩ 전체보기</button><button class="primary" id="grade">✓ 푼 것만 채점</button><button id="resetPart">🧹 현재 파트 초기화</button><button id="resetAll">🗑 전체 초기화</button></div><div class="stats" id="stats">전체 997문제</div></div>
 <main><article class="qcard" data-id="5과-clean-vocab-1" data-lesson="5과" data-cat="단어 · 5과 공식 단어장" data-answers="[&quot;la casa&quot;]">
 <div class="meta">5과 · 단어 · 5과 공식 단어장 · #1</div><div class="prompt">집 →</div>
 <input class="answerInput" placeholder="정답 입력 → Enter로 이 문제만 채점" autocomplete="off" autocapitalize="none" spellcheck="false">
@@ -3007,5 +3007,41 @@ document.querySelectorAll("#lessonBtns button").forEach(b=>b.onclick=()=>{lesson
 document.querySelectorAll("#partBtns button").forEach(b=>b.onclick=()=>{cat=b.dataset.cat;wrongOnly=false;picked=null;document.querySelectorAll("#partBtns button").forEach(x=>x.classList.toggle("active",x===b));apply()});
 function rnd(n){var p=cards.filter(c=>(lesson==="ALL"||c.dataset.lesson===lesson)&&(cat==="ALL"||c.dataset.cat===cat));for(var i=p.length-1;i;i--){var j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]]}picked=new Set(p.slice(0,n).map(c=>c.dataset.id));wrongOnly=false;apply()}
 document.getElementById("r30").onclick=()=>rnd(30);document.getElementById("r50").onclick=()=>rnd(50);document.getElementById("wrong").onclick=()=>{picked=null;wrongOnly=true;apply()};document.getElementById("all").onclick=()=>{lesson="ALL";cat="ALL";wrongOnly=false;picked=null;apply()};
-document.getElementById("grade").onclick=()=>{var d=0,c=0,n=0,w=0;cards.filter(x=>!x.classList.contains("hidden")).forEach(x=>{if(!x.querySelector("input").value.trim())return;d++;var r=one(x);if(r==="correct")c++;else if(r==="near")n++;else w++});document.getElementById("stats").textContent=`채점 ${d} · 정답 ${c} · 강세확인 ${n} · 오답 ${w}`};apply()})();
+document.getElementById("grade").onclick=()=>{var d=0,c=0,n=0,w=0;cards.filter(x=>!x.classList.contains("hidden")).forEach(x=>{if(!x.querySelector("input").value.trim())return;d++;var r=one(x);if(r==="correct")c++;else if(r==="near")n++;else w++});document.getElementById("stats").textContent=`채점 ${d} · 정답 ${c} · 강세확인 ${n} · 오답 ${w}`};
+
+function clearCard(c){
+  var id=c.dataset.id,inp=c.querySelector("input"),fb=c.querySelector(".feedback"),model=c.querySelector(".model");
+  inp.value="";
+  fb.textContent="";
+  fb.className="feedback";
+  model.style.display="none";
+  delete state[id];
+}
+document.getElementById("resetPart").onclick=()=>{
+  if(cat==="ALL"){
+    alert("초기화할 파트를 먼저 선택해 주세요.\n예: 5과 공식 단어장, 긍정 명령형, 숫자, 킬러 파트");
+    return;
+  }
+  var targets=cards.filter(c=>(c.dataset.cat===cat)&&(lesson==="ALL"||c.dataset.lesson===lesson));
+  if(!targets.length)return;
+  var label=(lesson==="ALL"?"":lesson+" · ")+cat;
+  if(!confirm("["+label+"] "+targets.length+"문제의 입력·채점 기록만 초기화할까요?\n다른 파트 기록은 그대로 유지됩니다."))return;
+  targets.forEach(clearCard);
+  save();
+  wrongOnly=false;picked=null;
+  apply();
+  document.getElementById("stats").textContent=label+" · "+targets.length+"문제 초기화 완료";
+};
+document.getElementById("resetAll").onclick=()=>{
+  if(!confirm("정말 전체 "+cards.length+"문제의 입력·채점 기록을 모두 초기화할까요?\n이 작업은 되돌릴 수 없습니다."))return;
+  cards.forEach(clearCard);
+  state={};
+  save();
+  lesson="ALL";cat="ALL";wrongOnly=false;picked=null;
+  document.querySelectorAll("#lessonBtns button").forEach((b,i)=>b.classList.toggle("active",i===0));
+  document.querySelectorAll("#partBtns button").forEach((b,i)=>b.classList.toggle("active",i===0));
+  apply();
+  document.getElementById("stats").textContent="전체 "+cards.length+"문제 초기화 완료";
+};
+apply()})();
 </script></body></html>
